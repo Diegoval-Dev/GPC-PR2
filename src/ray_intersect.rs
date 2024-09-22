@@ -2,7 +2,7 @@
 use nalgebra_glm::Vec3;
 use crate::material::Material;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct Intersect {
     pub point: Vec3,
