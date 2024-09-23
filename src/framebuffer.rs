@@ -14,9 +14,9 @@ impl Framebuffer {
         Framebuffer {
             width,
             height,
-            buffer: vec![Color::new(0, 0, 0); width * height],
-            background_color: Color::new(0, 0, 0),
-            current_color: Color::new(225, 225, 225)
+            buffer: vec![Color::new(0.0, 0.0, 0.0); width * height],
+            background_color: Color::new(0.0, 0.0, 0.0),
+            current_color: Color::new(225.0, 225.0, 225.0)
         }
     }
 

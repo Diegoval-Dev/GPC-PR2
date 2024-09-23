@@ -1,6 +1,5 @@
-use image::RgbaImage; 
 use crate::color::Color;
-use image::open;
+use image::RgbaImage;
 
 #[derive(Debug, Clone)]
 pub struct Material {
@@ -8,7 +7,9 @@ pub struct Material {
     pub specular: f32,
     pub albedo: [f32; 4],
     pub refractive_index: f32,
-    pub texture: Option<RgbaImage>, 
+    pub texture: Option<RgbaImage>,
+    pub normal_map: Option<RgbaImage>, 
+    pub emission: Color,               
 }
 
 impl Material {
@@ -18,6 +19,8 @@ impl Material {
         albedo: [f32; 4],
         refractive_index: f32,
         texture: Option<RgbaImage>,
+        normal_map: Option<RgbaImage>, 
+        emission: Color,               
     ) -> Self {
         Material {
             diffuse,
@@ -25,27 +28,20 @@ impl Material {
             albedo,
             refractive_index,
             texture,
+            normal_map,
+            emission,
         }
     }
 
     pub fn black() -> Self {
         Material {
-            diffuse: Color::new(0, 0, 0),
+            diffuse: Color::black(),
             specular: 0.0,
             albedo: [0.0, 0.0, 0.0, 0.0],
-            refractive_index: 0.0,
-            texture: None, 
-        }
-    }
-
-    pub fn with_texture(texture_path: &str) -> Self {
-        let texture = open(texture_path).unwrap().to_rgba8();
-        Material {
-            diffuse: Color::new(255, 255, 255), 
-            specular: 0.5,
-            albedo: [0.8, 0.8, 0.8, 0.0],
             refractive_index: 1.0,
-            texture: Some(texture),
+            texture: None,
+            normal_map: None,
+            emission: Color::black(),
         }
     }
 }
