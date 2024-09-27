@@ -256,7 +256,7 @@ fn main() {
   let frame_delay = Duration::from_millis(16);
   let mut last_frame = Instant::now();
   let mut time_of_day = 0.0;
-  let day_duration = 20.0;
+  let day_duration = 60.0;
 
   let mut framebuffer = Framebuffer::new(framebuffer_width, framebuffer_height);
 
