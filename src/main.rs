@@ -6,6 +6,7 @@ mod light;
 mod material;
 mod ray_intersect;
 mod skybox; 
+use rayon::prelude::*;
 
 use image::open;
 use minifb::{Key, Window, WindowOptions};
@@ -219,32 +220,35 @@ pub fn render(
     let fov = PI / 3.0;
     let perspective_scale = (fov * 0.5).tan();
 
-    for y in 0..framebuffer.height {
-        for x in 0..framebuffer.width {
-            let screen_x = (2.0 * x as f32) / width - 1.0;
+    // Itera paralelamente sobre cada fila del framebuffer usando `par_iter_mut`
+    framebuffer
+        .buffer
+        .par_chunks_mut(framebuffer.width as usize)
+        .enumerate()
+        .for_each(|(y, row)| {
             let screen_y = -(2.0 * y as f32) / height + 1.0;
-
-            let screen_x = screen_x * aspect_ratio * perspective_scale;
             let screen_y = screen_y * perspective_scale;
 
-            let ray_direction = normalize(&Vec3::new(screen_x, screen_y, -1.0));
-            let rotated_direction = camera.transform_vector(&ray_direction);
+            for (x, pixel) in row.iter_mut().enumerate() {
+                let screen_x = (2.0 * x as f32) / width - 1.0;
+                let screen_x = screen_x * aspect_ratio * perspective_scale;
 
-            let pixel_color = cast_ray(
-                &camera.position,
-                &rotated_direction,
-                objects,
-                lights,
-                0,
-                skybox,
-            );
+                let ray_direction = normalize(&Vec3::new(screen_x, screen_y, -1.0));
+                let rotated_direction = camera.transform_vector(&ray_direction);
 
-            framebuffer.set_current_color(pixel_color);
-            framebuffer.point(x, y);
-        }
-    }
+                let pixel_color = cast_ray(
+                    &camera.position,
+                    &rotated_direction,
+                    objects,
+                    lights,
+                    0,
+                    skybox,
+                );
+
+                *pixel = pixel_color;
+            }
+        });
 }
-
 
 
 
