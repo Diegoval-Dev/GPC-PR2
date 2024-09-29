@@ -71,3 +71,8 @@ El proyecto incluye los siguientes materiales:
 
 El proyecto simula un ciclo de día y noche en la escena. Durante el día, la luz es más brillante y azulada. Durante la noche, la luz es más tenue y anaranjada.
 
+## Video
+
+https://github.com/user-attachments/assets/a3427317-b62d-490b-9954-0b89c2ea34bb
+
+
